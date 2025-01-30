@@ -11,25 +11,25 @@ const app = express();
 app.use(express.json());
 
 
-app.post("/api/v1/signup",(req, res) => {
+app.post("/api/v1/signup", async (req, res) => {
+    // TODO: zod validation , hash the password
     const username = req.body.username;
     const password = req.body.password;
 
-    try{
-        UserModel.create({
+    try {
+        await UserModel.create({
             username: username,
-            password:password
-        })
-        
+            password: password
+        }) 
+
         res.json({
-            message: "User SignedUp Successfully"
+            message: "User signed up"
         })
-    } catch(e){
+    } catch(e) {
         res.status(411).json({
             message: "User already exists"
         })
     }
-    
 })
 
 app.post("/api/v1/signin",async(req, res) => {
@@ -184,9 +184,6 @@ app.get("/api/v1/brain/:sharelink", async(req, res) => {
         username: user.username, //? optional chaining// but we made a !user : as it tell sthat if teh a link exists then logicaaly a user will be there also, but some case when we when we delete user from database but we dont remove link related to that user form the dtabase  
         content: content
     })
-
-
-
 
 })
 
